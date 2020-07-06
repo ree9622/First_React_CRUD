@@ -19,8 +19,12 @@ const EditUser = () => {
   };
 
   useEffect(() => {
+    const loadUser = async () => {
+      const result = await axios.get(`http://localhost:3001/users/${id}`);
+      setUser(result.data);
+    };
     loadUser();
-  });
+  }, [id]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +32,6 @@ const EditUser = () => {
     history.push("/");
   };
 
-  const loadUser = async () => {
-    const result = await axios.get(`http://localhost:3001/users/${id}`);
-    setUser(result.data);
-  };
   return (
     <div className="container">
       <div className="w-75 mx-auto shadow p-5">
