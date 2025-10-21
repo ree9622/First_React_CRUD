@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
+import { useToast } from "../common/Toast";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
 const User = () => {
   const [user, setUser] = useState({
@@ -8,16 +11,43 @@ const User = () => {
     username: "",
     email: "",
     phone: "",
-    webiste: "",
+    website: "",
   });
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
+  const history = useHistory();
+  const { addToast } = useToast();
+
   useEffect(() => {
     loadUser();
-  });
+    // eslint-disable-next-line
+  }, [id]);
+
   const loadUser = async () => {
-    const res = await axios.get(`http://localhost:3001/users/${id}`);
-    setUser(res.data);
+    setLoading(true);
+    try {
+      const res = await axios.get(`${API_URL}/users/${id}`);
+      setUser(res.data);
+    } catch (error) {
+      console.error("Error loading user:", error);
+      addToast("Failed to load user data", "error");
+      history.push("/");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="container py-4 text-center">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+        <p className="mt-3">Loading user data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container py-4">
       <Link className="btn btn-primary" to="/">

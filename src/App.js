@@ -10,24 +10,27 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AddUser from "./components/users/AddUser";
 import EditUser from "./components/users/EditUser";
 import User from "./components/users/Users";
+import { ToastProvider } from "./components/common/Toast";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
+    <ToastProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
 
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/users/add" component={AddUser} />
-          <Route exact path="/users/:id" component={User} />
-          <Route exact path="/users/edit/:id" component={EditUser} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
-    </Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/about" component={About} />
+            <Route exact path="/contact" component={Contact} />
+            <Route exact path="/users/add" component={AddUser} />
+            <Route exact path="/users/:id" component={User} />
+            <Route exact path="/users/edit/:id" component={EditUser} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+    </ToastProvider>
   );
 }
 
